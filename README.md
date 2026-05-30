@@ -54,3 +54,31 @@ python -m http.server 8000
 ```
 
 그 다음 `http://localhost:8000`을 엽니다.
+
+## Design References
+
+Visual references are stored in:
+
+```text
+docs/design_reference/
+```
+
+Important:
+
+* The design references are not literal layouts to copy.
+* Google Sheets screenshots represent the validated MVP mood, information hierarchy, and feature intent.
+* The generated desktop mockup is the primary visual mood reference for the web version.
+* The final website should be web-native, responsive, and easier to use than the sheet.
+* If visual references conflict with usability, usability wins.
+
+Primary design direction:
+
+* matcha green
+* warm ivory
+* sakura pink
+* pink jellyfish mascots
+* soft Japanese fan site atmosphere
+* music search result clarity
+* cute but not childish
+* fanpage-like but not messy
+* not a SaaS dashboard

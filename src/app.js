@@ -57,6 +57,7 @@ function renderSongCard(song) {
     : "";
   const artistMeta = [song.artistKr, song.language].filter(Boolean).join(" · ");
   const themeText = [song.genre, song.theme].filter(Boolean).join(" · ");
+  const chips = [song.language, song.genre1, song.emotion].filter(Boolean);
   const sourceNote = song.sourceNote
     ? `<p class="song-note">${song.sourceNote}</p>`
     : "";
@@ -70,20 +71,32 @@ function renderSongCard(song) {
 
   return `
     <article class="song-card">
-      <div class="song-card-header">
-        <div>
-          <h3>${song.title}</h3>
-          ${translatedTitle}
-        </div>
-        ${pickBadge}
+      <div class="song-thumb" aria-hidden="true">
+        <span>♪</span>
       </div>
-      <p class="song-artist">${song.artist}${artistMeta ? ` · ${artistMeta}` : ""}</p>
-      <p class="song-theme">${themeText}</p>
-      ${sourceNote}
-      <div class="song-actions">
-        ${videoButton}
-        ${lyricsButton}
-        ${singCount}
+      <div class="song-main">
+        <div class="song-title-block">
+          <div class="song-card-header">
+            <h3>${song.title}</h3>
+            ${pickBadge}
+          </div>
+          ${translatedTitle}
+          <p class="song-artist">${song.artist}${artistMeta ? ` · ${artistMeta}` : ""}</p>
+        </div>
+
+        <div class="song-meta">
+          <p class="song-theme">${themeText}</p>
+          ${sourceNote}
+          <div class="song-chip-list">
+            ${chips.map((chip) => `<span class="song-chip">${chip}</span>`).join("")}
+          </div>
+        </div>
+
+        <div class="song-actions">
+          ${videoButton}
+          ${lyricsButton}
+          ${singCount}
+        </div>
       </div>
     </article>
   `;

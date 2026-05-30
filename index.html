@@ -7,30 +7,81 @@
     <link rel="stylesheet" href="src/style.css">
   </head>
   <body>
-    <header class="site-header">
-      <p class="eyebrow">Kura Songbook</p>
-      <h1>쿠라's 노래책</h1>
-      <p class="intro">
-        방송 중 부를 곡을 빠르게 찾고, 영상과 가사 링크로 이동하는 노래 검색 페이지입니다.
-      </p>
-    </header>
+    <div class="page-frame">
+      <header class="hero">
+        <div class="petal petal-a" aria-hidden="true"></div>
+        <div class="petal petal-b" aria-hidden="true"></div>
+        <div class="jelly jelly-left" aria-hidden="true">🪼</div>
+        <div class="jelly jelly-right" aria-hidden="true">🪼</div>
 
-    <main class="app-shell">
-      <section class="search-panel" aria-labelledby="search-title">
-        <h2 id="search-title">노래 검색</h2>
-        <label class="search-label" for="search-input">검색어</label>
-        <input
-          id="search-input"
-          class="search-input"
-          type="search"
-          placeholder="제목, 가수, 장르, 태그로 검색"
-          autocomplete="off"
-        >
-        <p id="result-summary" class="result-summary" aria-live="polite">곡을 불러오는 중...</p>
-      </section>
+        <p class="eyebrow">Kura Songbook</p>
+        <h1>쿠라's 노래책</h1>
+        <p class="intro">노래로 이어지는, 쿠라와 쿠라메이트의 방송용 검색 포털</p>
 
-      <section id="song-list" class="song-list" aria-label="검색 결과"></section>
-    </main>
+        <section class="search-portal" aria-labelledby="search-title">
+          <h2 id="search-title">노래 검색</h2>
+          <label class="search-label" for="search-input">검색어</label>
+          <div class="search-box">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input
+              id="search-input"
+              class="search-input"
+              type="search"
+              placeholder="제목, 가수, 애니, OST, 틱톡 키워드로 검색"
+              autocomplete="off"
+            >
+            <button class="search-button" type="button" aria-label="검색">검색</button>
+          </div>
+          <div class="chip-row" aria-label="필터 자리">
+            <span class="chip">🌐 언어</span>
+            <span class="chip">🎼 장르</span>
+            <span class="chip">💚 분위기</span>
+            <span class="chip">🏷 출처</span>
+            <span class="chip chip-pink">⭐ Pick</span>
+          </div>
+        </section>
+      </header>
+
+      <main class="app-shell">
+        <section class="results-column" aria-labelledby="results-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Search Results</p>
+              <h2 id="results-title">검색 결과</h2>
+            </div>
+            <p id="result-summary" class="result-summary" aria-live="polite">곡을 불러오는 중...</p>
+          </div>
+          <section id="song-list" class="song-list" aria-label="검색 결과"></section>
+        </section>
+
+        <aside class="sidebar" aria-label="추천과 도움말">
+          <section class="side-card side-card-feature">
+            <p class="side-label">🍀 Today's Random Recommendation</p>
+            <div class="placeholder-art" aria-hidden="true">
+              <span>♪</span>
+            </div>
+            <h2>오늘의 랜덤 추천</h2>
+            <p>다음 단계에서 전체 곡 또는 현재 검색 결과 안에서 한 곡을 고정 추천합니다.</p>
+          </section>
+
+          <section class="side-card">
+            <p class="side-label">🔎 Search Help</p>
+            <h2>검색 도움말</h2>
+            <ul class="help-list">
+              <li>여러 단어는 띄어쓰기로 검색</li>
+              <li>제목, 가수, 장르, 주제, 태그를 함께 탐색</li>
+              <li>예: 일본어 발라드 / 사랑 그리움</li>
+            </ul>
+          </section>
+
+          <section class="side-card side-card-pink">
+            <p class="side-label">🍵 Kura Pick Collection</p>
+            <h2>쿠라 Pick 모음</h2>
+            <p>Pick 표시가 있는 곡을 모아보는 컬렉션 영역으로 확장할 수 있습니다.</p>
+          </section>
+        </aside>
+      </main>
+    </div>
 
     <script src="src/app.js" defer></script>
   </body>
