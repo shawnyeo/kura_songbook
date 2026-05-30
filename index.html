@@ -32,12 +32,22 @@
             >
             <button class="search-button" type="button" aria-label="검색">검색</button>
           </div>
-          <div class="chip-row" aria-label="필터 자리">
-            <span class="chip">🌐 언어</span>
-            <span class="chip">🎼 장르</span>
-            <span class="chip">💚 분위기</span>
-            <span class="chip">🏷 출처</span>
-            <span class="chip chip-pink">⭐ Pick</span>
+          <div class="chip-row filter-row" aria-label="기본 필터">
+            <details class="filter-menu" data-filter="language">
+              <summary class="chip">🌐 언어</summary>
+              <div id="language-filter-options" class="filter-options"></div>
+            </details>
+            <details class="filter-menu" data-filter="genre">
+              <summary class="chip">🎼 장르</summary>
+              <div id="genre-filter-options" class="filter-options"></div>
+            </details>
+            <details class="filter-menu" data-filter="mood">
+              <summary class="chip">💚 분위기</summary>
+              <div id="mood-filter-options" class="filter-options"></div>
+            </details>
+            <button id="pick-first-toggle" class="chip chip-pink chip-button" type="button" aria-pressed="false">
+              ⭐ Pick 먼저
+            </button>
           </div>
         </section>
       </header>

@@ -261,9 +261,88 @@ h1 {
   font-weight: 700;
 }
 
+.filter-row {
+  align-items: flex-start;
+}
+
+.filter-menu {
+  position: relative;
+}
+
+.filter-menu summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.filter-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter-menu summary::after {
+  content: attr(data-count);
+  display: inline-grid;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--sakura);
+  color: var(--matcha-dark);
+  font-size: 0.72rem;
+}
+
+.filter-menu summary[data-count=""]::after {
+  display: none;
+}
+
+.filter-options {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 50%;
+  display: grid;
+  width: max-content;
+  min-width: 170px;
+  max-height: 260px;
+  overflow: auto;
+  transform: translateX(-50%);
+  gap: 5px;
+  border: 1px solid var(--leaf-border);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 6px 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.filter-option:hover {
+  background: var(--matcha-milk);
+}
+
+.chip-button {
+  cursor: pointer;
+  font: inherit;
+}
+
 .chip-pink {
   border-color: rgba(235, 207, 218, 0.95);
   color: #9b5e6a;
+}
+
+.chip-active {
+  background: #fff7fa;
+  box-shadow: 0 0 0 3px rgba(235, 207, 218, 0.34);
 }
 
 .app-shell {
@@ -744,6 +823,18 @@ h1 {
     min-height: 32px;
     padding: 0 10px;
     font-size: 0.82rem;
+  }
+
+  .filter-menu {
+    position: static;
+  }
+
+  .filter-options {
+    right: 0;
+    left: 0;
+    width: auto;
+    min-width: 0;
+    transform: none;
   }
 
   .app-shell {

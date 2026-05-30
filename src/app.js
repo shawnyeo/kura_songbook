@@ -14,7 +14,13 @@ const searchableFields = [
 
 const state = {
   songs: [],
-  query: ""
+  query: "",
+  filters: {
+    language: new Set(),
+    genre: new Set(),
+    mood: new Set()
+  },
+  pickFirst: false
 };
 
 const searchInput = document.querySelector("#search-input");
@@ -23,6 +29,13 @@ const songList = document.querySelector("#song-list");
 const randomAllButton = document.querySelector("#random-all-button");
 const randomVisibleButton = document.querySelector("#random-visible-button");
 const randomResult = document.querySelector("#random-result");
+const filterOptionContainers = {
+  language: document.querySelector("#language-filter-options"),
+  genre: document.querySelector("#genre-filter-options"),
+  mood: document.querySelector("#mood-filter-options")
+};
+const filterMenus = document.querySelectorAll(".filter-menu");
+const pickFirstToggle = document.querySelector("#pick-first-toggle");
 
 function normalizeText(value) {
   return String(value ?? "")
@@ -42,8 +55,36 @@ function matchesSearch(song, query) {
   );
 }
 
+function matchesSetFilter(value, selectedValues) {
+  if (selectedValues.size === 0) return true;
+  return selectedValues.has(value);
+}
+
+function matchesGenreFilter(song) {
+  const selectedValues = state.filters.genre;
+  if (selectedValues.size === 0) return true;
+  return [song.genre1, song.genre2].some((genre) => selectedValues.has(genre));
+}
+
+function matchesFilters(song) {
+  return (
+    matchesSetFilter(song.language, state.filters.language) &&
+    matchesGenreFilter(song) &&
+    matchesSetFilter(song.emotion, state.filters.mood)
+  );
+}
+
 function getVisibleSongs() {
-  return state.songs.filter((song) => matchesSearch(song, state.query));
+  const visibleSongs = state.songs.filter(
+    (song) => matchesSearch(song, state.query) && matchesFilters(song)
+  );
+
+  if (!state.pickFirst) return visibleSongs;
+
+  return [...visibleSongs].sort((first, second) => {
+    if (first.pick === second.pick) return 0;
+    return first.pick ? -1 : 1;
+  });
 }
 
 function getRandomSong(songs) {
@@ -171,6 +212,43 @@ function render() {
   songList.innerHTML = visibleSongs.map(renderSongCard).join("");
 }
 
+function getUniqueValues(extractor) {
+  return [
+    ...new Set(
+      state.songs
+        .flatMap(extractor)
+        .map((value) => String(value ?? "").trim())
+        .filter(Boolean)
+    )
+  ].sort((first, second) => first.localeCompare(second, "ko"));
+}
+
+function renderFilterOptions(filterName, values) {
+  filterOptionContainers[filterName].innerHTML = values
+    .map(
+      (value) => `
+        <label class="filter-option">
+          <input type="checkbox" value="${value}" data-filter="${filterName}">
+          <span>${value}</span>
+        </label>
+      `
+    )
+    .join("");
+}
+
+function renderFilters() {
+  renderFilterOptions("language", getUniqueValues((song) => [song.language]));
+  renderFilterOptions("genre", getUniqueValues((song) => [song.genre1, song.genre2]));
+  renderFilterOptions("mood", getUniqueValues((song) => [song.emotion]));
+}
+
+function updateFilterSummary(filterName) {
+  const menu = document.querySelector(`.filter-menu[data-filter="${filterName}"]`);
+  const summary = menu.querySelector("summary");
+  const selectedCount = state.filters[filterName].size;
+  summary.dataset.count = selectedCount ? String(selectedCount) : "";
+}
+
 async function loadSongs() {
   try {
     const response = await fetch("./data/songs.json");
@@ -179,6 +257,7 @@ async function loadSongs() {
     }
 
     state.songs = await response.json();
+    renderFilters();
     render();
   } catch (error) {
     console.error(error);
@@ -193,6 +272,39 @@ async function loadSongs() {
 
 searchInput.addEventListener("input", (event) => {
   state.query = event.target.value;
+  render();
+});
+
+Object.values(filterOptionContainers).forEach((container) => {
+  container.addEventListener("change", (event) => {
+    const checkbox = event.target;
+    const filterName = checkbox.dataset.filter;
+    const selectedValues = state.filters[filterName];
+
+    if (checkbox.checked) {
+      selectedValues.add(checkbox.value);
+    } else {
+      selectedValues.delete(checkbox.value);
+    }
+
+    updateFilterSummary(filterName);
+    render();
+  });
+});
+
+filterMenus.forEach((menu) => {
+  menu.addEventListener("toggle", () => {
+    if (!menu.open) return;
+    filterMenus.forEach((otherMenu) => {
+      if (otherMenu !== menu) otherMenu.open = false;
+    });
+  });
+});
+
+pickFirstToggle.addEventListener("click", () => {
+  state.pickFirst = !state.pickFirst;
+  pickFirstToggle.setAttribute("aria-pressed", String(state.pickFirst));
+  pickFirstToggle.classList.toggle("chip-active", state.pickFirst);
   render();
 });
 
