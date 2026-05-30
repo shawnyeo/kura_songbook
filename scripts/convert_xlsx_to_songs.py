@@ -34,6 +34,9 @@ COLUMN_MAPPING = [
     ("U", "pick"),
     ("V", "thumbnailUrl"),
 ]
+OPTIONAL_HEADER_MAPPING = {
+    "곡 소개": "songIntro",
+}
 
 YOUTUBE_ID_PATTERN = re.compile(
     r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})"
@@ -175,17 +178,33 @@ def read_sheet_rows(archive: zipfile.ZipFile, sheet_path: str, shared_strings):
     rows = []
 
     for row in root.findall(".//main:sheetData/main:row", NS):
-        values = [""] * 22
+        cell_values = {}
+        max_column = 22
         for cell in row.findall("main:c", NS):
             ref = cell.attrib.get("r", "")
             if not ref:
                 continue
             index = column_index(ref)
-            if 1 <= index <= 22:
-                values[index - 1] = read_cell_value(cell, shared_strings)
+            max_column = max(max_column, index)
+            cell_values[index - 1] = read_cell_value(cell, shared_strings)
+
+        values = [""] * max_column
+        for index, value in cell_values.items():
+            values[index] = value
         rows.append(values)
 
     return rows
+
+
+def build_header_map(header_row):
+    return {stringify(value): index for index, value in enumerate(header_row)}
+
+
+def get_optional_value(values, header_map, header_name):
+    index = header_map.get(header_name)
+    if index is None or index >= len(values):
+        return ""
+    return values[index]
 
 
 def detect_db_sheet(sheets, sheet_rows_by_name):
@@ -213,6 +232,7 @@ def convert_workbook(input_path: Path):
 
     sheet_name, rows = detect_db_sheet(sheets, sheet_rows_by_name)
     songs = []
+    header_map = build_header_map(rows[0]) if rows else {}
 
     for row in rows[1:]:
         values = list(row)
@@ -220,6 +240,10 @@ def convert_workbook(input_path: Path):
             continue
 
         raw = {field: values[position] for position, (_column, field) in enumerate(COLUMN_MAPPING)}
+        optional_raw = {
+            field: get_optional_value(values, header_map, header)
+            for header, field in OPTIONAL_HEADER_MAPPING.items()
+        }
         video_url = stringify(raw["videoUrl"])
         existing_thumbnail = stringify(raw["thumbnailUrl"])
 
@@ -235,6 +259,7 @@ def convert_workbook(input_path: Path):
                 "genre1": stringify(raw["genre1"]),
                 "genre2": stringify(raw["genre2"]),
                 "theme": stringify(raw["theme"]),
+                "songIntro": stringify(optional_raw["songIntro"]),
                 "situation": stringify(raw["situation"]),
                 "target": stringify(raw["target"]),
                 "emotion": stringify(raw["emotion"]),

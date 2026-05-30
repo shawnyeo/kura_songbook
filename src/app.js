@@ -6,6 +6,7 @@ const searchableFields = [
   "language",
   "genre",
   "theme",
+  "songIntro",
   "sourceNote",
   "workTitle",
   "tags"
@@ -58,6 +59,9 @@ function renderSongCard(song) {
   const artistMeta = [song.artistKr, song.language].filter(Boolean).join(" · ");
   const themeText = [song.genre, song.theme].filter(Boolean).join(" · ");
   const chips = [song.language, song.genre1, song.emotion].filter(Boolean);
+  const songIntro = song.songIntro
+    ? `<p class="song-intro">${song.songIntro}</p>`
+    : "";
   const sourceNote = song.sourceNote
     ? `<p class="song-note">${song.sourceNote}</p>`
     : "";
@@ -82,6 +86,7 @@ function renderSongCard(song) {
           </div>
           ${translatedTitle}
           <p class="song-artist">${song.artist}${artistMeta ? ` · ${artistMeta}` : ""}</p>
+          ${songIntro}
         </div>
 
         <div class="song-meta">
