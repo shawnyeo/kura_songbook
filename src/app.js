@@ -20,7 +20,8 @@ const state = {
     genre: new Set(),
     mood: new Set()
   },
-  pickFirst: false
+  pickFirst: false,
+  sortKey: "default"
 };
 
 const searchInput = document.querySelector("#search-input");
@@ -36,6 +37,7 @@ const filterOptionContainers = {
 };
 const filterMenus = document.querySelectorAll(".filter-menu");
 const pickFirstToggle = document.querySelector("#pick-first-toggle");
+const sortSelect = document.querySelector("#sort-select");
 
 function normalizeText(value) {
   return String(value ?? "")
@@ -74,17 +76,53 @@ function matchesFilters(song) {
   );
 }
 
+function getOriginalOrder(song) {
+  return state.songs.indexOf(song);
+}
+
+function compareText(first, second) {
+  return normalizeText(first).localeCompare(normalizeText(second), "ko");
+}
+
+function compareSelectedSort(first, second) {
+  if (state.sortKey === "title") {
+    return compareText(first.title, second.title);
+  }
+
+  if (state.sortKey === "artist") {
+    return compareText(first.artist, second.artist) || compareText(first.title, second.title);
+  }
+
+  if (state.sortKey === "singCount") {
+    return Number(second.singCount || 0) - Number(first.singCount || 0);
+  }
+
+  return 0;
+}
+
+function compareSongs(first, second) {
+  if (state.pickFirst && first.pick !== second.pick) {
+    return first.pick ? -1 : 1;
+  }
+
+  return compareSelectedSort(first, second) || getOriginalOrder(first) - getOriginalOrder(second);
+}
+
+function hasActiveSearchState() {
+  return (
+    state.query.trim() ||
+    state.filters.language.size ||
+    state.filters.genre.size ||
+    state.filters.mood.size
+  );
+}
+
 function getVisibleSongs() {
   const visibleSongs = state.songs.filter(
     (song) => matchesSearch(song, state.query) && matchesFilters(song)
   );
 
-  if (!state.pickFirst) return visibleSongs;
-
-  return [...visibleSongs].sort((first, second) => {
-    if (first.pick === second.pick) return 0;
-    return first.pick ? -1 : 1;
-  });
+  return [...visibleSongs].sort(compareSongs);
 }
 
 function getRandomSong(songs) {
@@ -143,6 +181,9 @@ function updateRandomButtons() {
 
 function renderSongCard(song) {
   const pickBadge = song.pick ? `<span class="pick-badge">🍵 Pick</span>` : "";
+  const thumbnail = song.thumbnailUrl
+    ? `<img src="${song.thumbnailUrl}" alt="" loading="lazy">`
+    : `<span>♪</span>`;
   const translatedTitle = song.translation
     ? `<p class="song-translation">${song.translation}</p>`
     : "";
@@ -165,7 +206,7 @@ function renderSongCard(song) {
   return `
     <article class="song-card">
       <div class="song-thumb" aria-hidden="true">
-        <span>♪</span>
+        ${thumbnail}
       </div>
       <div class="song-main">
         <div class="song-title-block">
@@ -200,8 +241,8 @@ function render() {
   const visibleSongs = getVisibleSongs();
   updateRandomButtons();
 
-  resultSummary.textContent = state.query
-    ? `${visibleSongs.length}곡이 검색되었습니다.`
+  resultSummary.textContent = hasActiveSearchState()
+    ? `${visibleSongs.length}곡`
     : `전체 ${visibleSongs.length}곡`;
 
   if (visibleSongs.length === 0) {
@@ -305,6 +346,11 @@ pickFirstToggle.addEventListener("click", () => {
   state.pickFirst = !state.pickFirst;
   pickFirstToggle.setAttribute("aria-pressed", String(state.pickFirst));
   pickFirstToggle.classList.toggle("chip-active", state.pickFirst);
+  render();
+});
+
+sortSelect.addEventListener("change", (event) => {
+  state.sortKey = event.target.value;
   render();
 });
 
