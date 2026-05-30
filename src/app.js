@@ -20,6 +20,9 @@ const state = {
 const searchInput = document.querySelector("#search-input");
 const resultSummary = document.querySelector("#result-summary");
 const songList = document.querySelector("#song-list");
+const randomAllButton = document.querySelector("#random-all-button");
+const randomVisibleButton = document.querySelector("#random-visible-button");
+const randomResult = document.querySelector("#random-result");
 
 function normalizeText(value) {
   return String(value ?? "")
@@ -43,6 +46,11 @@ function getVisibleSongs() {
   return state.songs.filter((song) => matchesSearch(song, state.query));
 }
 
+function getRandomSong(songs) {
+  if (songs.length === 0) return null;
+  return songs[Math.floor(Math.random() * songs.length)];
+}
+
 function createLinkButton(url, label) {
   if (!url) {
     return `<span class="button button-disabled" aria-disabled="true">📄 가사 준비 중</span>`;
@@ -51,12 +59,52 @@ function createLinkButton(url, label) {
   return `<a class="button" href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
 }
 
+function getArtistLine(song) {
+  const artistMeta = [song.artistKr, song.language].filter(Boolean).join(" · ");
+  return `${song.artist}${artistMeta ? ` · ${artistMeta}` : ""}`;
+}
+
+function renderRandomSong(song) {
+  if (!song) {
+    randomResult.innerHTML = `<p>현재 검색 결과에 추천할 곡이 없습니다.</p>`;
+    return;
+  }
+
+  const translatedTitle = song.translation
+    ? `<p class="random-translation">${song.translation}</p>`
+    : "";
+  const songIntro = song.songIntro
+    ? `<p class="random-intro">${song.songIntro}</p>`
+    : "";
+  const videoButton = song.videoUrl
+    ? `<a class="button" href="${song.videoUrl}" target="_blank" rel="noopener noreferrer">▶ 영상</a>`
+    : "";
+  const lyricsButton = createLinkButton(song.lyricsUrl, "📄 가사");
+
+  randomResult.innerHTML = `
+    <article class="random-song">
+      <h3>${song.title}</h3>
+      ${translatedTitle}
+      <p class="random-artist">${getArtistLine(song)}</p>
+      ${songIntro}
+      <div class="random-link-row">
+        ${videoButton}
+        ${lyricsButton}
+      </div>
+    </article>
+  `;
+}
+
+function updateRandomButtons() {
+  randomAllButton.disabled = state.songs.length === 0;
+  randomVisibleButton.disabled = getVisibleSongs().length === 0;
+}
+
 function renderSongCard(song) {
   const pickBadge = song.pick ? `<span class="pick-badge">🍵 Pick</span>` : "";
   const translatedTitle = song.translation
     ? `<p class="song-translation">${song.translation}</p>`
     : "";
-  const artistMeta = [song.artistKr, song.language].filter(Boolean).join(" · ");
   const themeText = [song.genre, song.theme].filter(Boolean).join(" · ");
   const chips = [song.language, song.genre1, song.emotion].filter(Boolean);
   const songIntro = song.songIntro
@@ -85,7 +133,7 @@ function renderSongCard(song) {
             ${pickBadge}
           </div>
           ${translatedTitle}
-          <p class="song-artist">${song.artist}${artistMeta ? ` · ${artistMeta}` : ""}</p>
+          <p class="song-artist">${getArtistLine(song)}</p>
           ${songIntro}
         </div>
 
@@ -109,6 +157,7 @@ function renderSongCard(song) {
 
 function render() {
   const visibleSongs = getVisibleSongs();
+  updateRandomButtons();
 
   resultSummary.textContent = state.query
     ? `${visibleSongs.length}곡이 검색되었습니다.`
@@ -145,6 +194,14 @@ async function loadSongs() {
 searchInput.addEventListener("input", (event) => {
   state.query = event.target.value;
   render();
+});
+
+randomAllButton.addEventListener("click", () => {
+  renderRandomSong(getRandomSong(state.songs));
+});
+
+randomVisibleButton.addEventListener("click", () => {
+  renderRandomSong(getRandomSong(getVisibleSongs()));
 });
 
 loadSongs();
