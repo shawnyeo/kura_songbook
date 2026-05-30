@@ -645,7 +645,24 @@ h1 {
   }
 
   .sidebar {
+    display: contents;
     position: static;
+  }
+
+  .random-panel {
+    order: 1;
+  }
+
+  .results-column {
+    order: 2;
+  }
+
+  .help-panel {
+    order: 3;
+  }
+
+  .pick-panel {
+    order: 4;
   }
 
   .song-main {
@@ -671,12 +688,12 @@ h1 {
 
   .hero {
     min-height: 0;
-    padding: 42px 14px 34px;
+    padding: 26px 12px 18px;
   }
 
   .hero::before {
     inset: 10px 0 0;
-    border-radius: 26px;
+    border-radius: 22px;
   }
 
   .hero::after,
@@ -686,12 +703,22 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(2.2rem, 12vw, 3.4rem);
+    font-size: clamp(1.9rem, 10vw, 2.8rem);
+  }
+
+  .eyebrow {
+    margin-bottom: 4px;
+    font-size: 0.78rem;
+  }
+
+  .intro {
+    margin-top: 8px;
+    font-size: 0.9rem;
   }
 
   .search-box {
     grid-template-columns: 48px 1fr;
-    min-height: 62px;
+    min-height: 56px;
   }
 
   .search-button {
@@ -699,13 +726,18 @@ h1 {
   }
 
   .search-input {
-    min-height: 60px;
+    min-height: 54px;
     padding-right: 18px;
     font-size: 0.98rem;
   }
 
+  .search-portal {
+    margin-top: 18px;
+  }
+
   .chip-row {
     gap: 8px;
+    margin-top: 12px;
   }
 
   .chip {
@@ -715,7 +747,9 @@ h1 {
   }
 
   .app-shell {
-    padding-top: 22px;
+    gap: 14px;
+    padding-top: 16px;
+    padding-bottom: 42px;
   }
 
   .section-heading {
@@ -728,14 +762,110 @@ h1 {
 
   .song-card {
     grid-template-columns: 1fr;
+    border-radius: 16px;
   }
 
   .song-thumb {
-    min-height: 84px;
+    min-height: 54px;
     margin: 0;
+    font-size: 1.8rem;
+  }
+
+  .song-thumb span {
+    width: 42px;
+    height: 42px;
   }
 
   .song-main {
-    padding: 0 16px 16px;
+    gap: 10px;
+    padding: 0 12px 12px;
+  }
+
+  .song-card h3 {
+    font-size: 1.08rem;
+  }
+
+  .song-translation,
+  .song-artist,
+  .song-intro,
+  .song-theme,
+  .song-note {
+    margin-top: 4px;
+  }
+
+  .song-intro {
+    font-size: 0.86rem;
+  }
+
+  .song-chip-list {
+    gap: 5px;
+    margin-top: 8px;
+  }
+
+  .song-actions {
+    gap: 7px;
+  }
+
+  .button,
+  .song-count {
+    min-height: 34px;
+    font-size: 0.86rem;
+  }
+
+  .side-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .side-card-feature {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    column-gap: 12px;
+    align-items: start;
+  }
+
+  .side-card-feature .side-label,
+  .side-card-feature h2,
+  .side-card-feature .random-actions,
+  .side-card-feature .random-result {
+    grid-column: 2;
+  }
+
+  .placeholder-art {
+    grid-row: 1 / span 4;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0;
+    font-size: 1.8rem;
+  }
+
+  .placeholder-art span {
+    width: 42px;
+    height: 42px;
+  }
+
+  .random-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .random-button {
+    min-height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .random-result {
+    margin-top: 8px;
+    padding-top: 10px;
+  }
+
+  .random-song h3 {
+    font-size: 1rem;
+  }
+
+  .random-link-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
   }
 }
