@@ -26,3 +26,31 @@ Codex 또는 작업자는 먼저 아래 문서를 읽어야 합니다.
 
 `source_archive/`는 과거 자료 보관용입니다.  
 문서가 충돌하면 `docs/`를 우선합니다.
+
+## Convert xlsx to JSON
+
+실제 Google Sheets snapshot을 `data/songs.json`으로 변환할 때는 아래 명령을 사용합니다.
+
+```powershell
+python scripts/convert_xlsx_to_songs.py
+```
+
+변환 전 미리보기만 확인하려면:
+
+```powershell
+python scripts/convert_xlsx_to_songs.py --dry-run
+```
+
+입력/출력 경로를 직접 지정할 수도 있습니다.
+
+```powershell
+python scripts/convert_xlsx_to_songs.py --input "source_archive/쿠라's 노래책  v1.0.xlsx" --output data/songs.json
+```
+
+로컬에서 사이트를 확인할 때는 `file://` 대신 정적 서버를 사용합니다.
+
+```powershell
+python -m http.server 8000
+```
+
+그 다음 `http://localhost:8000`을 엽니다.
