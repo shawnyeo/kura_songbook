@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>쿠라's 노래책</title>
+    <link rel="stylesheet" href="src/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <p class="eyebrow">Kura Songbook</p>
+      <h1>쿠라's 노래책</h1>
+      <p class="intro">
+        방송 중 부를 곡을 빠르게 찾고, 영상과 가사 링크로 이동하는 노래 검색 페이지입니다.
+      </p>
+    </header>
+
+    <main class="app-shell">
+      <section class="search-panel" aria-labelledby="search-title">
+        <h2 id="search-title">노래 검색</h2>
+        <label class="search-label" for="search-input">검색어</label>
+        <input
+          id="search-input"
+          class="search-input"
+          type="search"
+          placeholder="제목, 가수, 장르, 태그로 검색"
+          autocomplete="off"
+        >
+        <p id="result-summary" class="result-summary" aria-live="polite">곡을 불러오는 중...</p>
+      </section>
+
+      <section id="song-list" class="song-list" aria-label="검색 결과"></section>
+    </main>
+
+    <script src="src/app.js" defer></script>
+  </body>
+</html>
