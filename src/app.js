@@ -215,6 +215,14 @@ function renderRandomSong(song) {
   const thumbnail = thumbnailUrl
     ? `<img src="${thumbnailUrl}" alt="" loading="lazy">`
     : `<span>♪</span>`;
+  const thumbContent = `
+    <div class="random-thumb" aria-hidden="true">
+      ${thumbnail}
+    </div>
+  `;
+  const thumb = song.videoUrl
+    ? `<a class="random-thumb-link" href="${song.videoUrl}" target="_blank" rel="noopener noreferrer" aria-label="${song.title} 영상 열기">${thumbContent}</a>`
+    : thumbContent;
   const translatedTitle = getTranslatedTitle(song, "random-translation");
   const songIntro = song.songIntro
     ? `<p class="random-intro">${song.songIntro}</p>`
@@ -223,16 +231,11 @@ function renderRandomSong(song) {
   const chipList = chips.length
     ? `<div class="random-chip-list">${chips.map((chip) => `<span class="song-chip">${chip}</span>`).join("")}</div>`
     : "";
-  const videoButton = song.videoUrl
-    ? `<a class="button" href="${song.videoUrl}" target="_blank" rel="noopener noreferrer">▶ 영상</a>`
-    : "";
   const lyricsButton = createLinkButton(song.lyricsUrl, "📄 가사");
 
   randomResult.innerHTML = `
     <article class="random-song">
-      <div class="random-thumb" aria-hidden="true">
-        ${thumbnail}
-      </div>
+      ${thumb}
       <div class="random-song-body">
         <h3>${song.title}</h3>
         ${translatedTitle}
@@ -240,7 +243,6 @@ function renderRandomSong(song) {
         ${songIntro}
         ${chipList}
         <div class="random-link-row">
-          ${videoButton}
           ${lyricsButton}
         </div>
       </div>
