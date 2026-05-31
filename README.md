@@ -55,6 +55,16 @@ python -m http.server 8000
 
 그 다음 `http://localhost:8000`을 엽니다.
 
+## GitHub Pages Deployment
+
+GitHub Pages는 repository root를 정적 사이트로 배포하도록 설정합니다.
+
+Recommended settings:
+
+* Source: `Deploy from a branch`
+* Branch: `main`
+* Folder: `/ (root)`
+
 ## Design References
 
 Visual references are stored in:
