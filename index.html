@@ -4,133 +4,63 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>쿠라's 노래책</title>
-    <link rel="stylesheet" href="src/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&amp;family=Gowun+Dodum&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css?v=beta-1">
   </head>
-  <body>
-    <div class="page-frame">
-      <div class="desktop-layout">
-        <header class="hero">
-          <div class="mood-scene mood-scene-left" aria-hidden="true">
-            <span class="mood-window"></span>
-            <span class="mood-cup">🍵</span>
-            <span class="mood-jelly">🪼</span>
-          </div>
-          <div class="mood-scene mood-scene-right" aria-hidden="true">
-            <span class="mood-tag">くらの<br>うた帳</span>
-            <span class="mood-leaf">🍃</span>
-          </div>
-          <div class="petal petal-a" aria-hidden="true"></div>
-          <div class="petal petal-b" aria-hidden="true"></div>
-
-          <div class="hero-panel">
-            <p class="eyebrow">Kura Songbook</p>
-            <h1>쿠라's 노래책</h1>
-            <p class="intro">노래로 이어지는, 쿠라와 쿠라메이트의 방송용 검색 포털</p>
-
-            <section class="search-portal" aria-labelledby="search-title">
-              <h2 id="search-title">노래 검색</h2>
-              <label class="search-label" for="search-input">검색어</label>
-              <div class="search-box">
-                <span class="search-icon" aria-hidden="true">⌕</span>
-                <input
-                  id="search-input"
-                  class="search-input"
-                  type="search"
-                  placeholder="제목, 가수, 애니, OST, 틱톡 키워드로 검색"
-                  autocomplete="off"
-                >
-                <button class="search-button" type="button" aria-label="검색">검색</button>
-              </div>
-              <div class="chip-row filter-row" aria-label="기본 필터">
-                <details class="filter-menu" data-filter="language">
-                  <summary class="chip">🌐 언어</summary>
-                  <div id="language-filter-options" class="filter-options"></div>
-                </details>
-                <details class="filter-menu" data-filter="genre">
-                  <summary class="chip">🎼 장르</summary>
-                  <div id="genre-filter-options" class="filter-options"></div>
-                </details>
-                <details class="filter-menu" data-filter="mood">
-                  <summary class="chip">💚 분위기</summary>
-                  <div id="mood-filter-options" class="filter-options"></div>
-                </details>
-                <button id="pick-first-toggle" class="chip chip-pink chip-button" type="button" aria-pressed="false">
-                  ⭐ Pick 먼저
-                </button>
-              </div>
-            </section>
-          </div>
-
-          <section class="side-card side-card-feature random-panel hero-random-card">
-            <p class="side-label">🍀 Today's Random Recommendation</p>
-            <div class="placeholder-art" aria-hidden="true">
-              <span>♪</span>
-            </div>
-            <h2>오늘의 랜덤 추천</h2>
-            <div class="random-actions">
-              <button id="random-all-button" class="random-button" type="button">전체 곡 랜덤</button>
-              <button id="random-visible-button" class="random-button random-button-soft" type="button">
-                현재 결과 랜덤
-              </button>
-            </div>
-            <div id="random-result" class="random-result" aria-live="polite">
-              <p>전체 곡 또는 현재 검색 결과에서 한 곡을 골라보세요.</p>
-            </div>
-          </section>
-        </header>
-
-        <section class="results-column" aria-labelledby="results-title">
-          <div class="section-heading">
-            <div class="result-title-block">
-              <p class="section-kicker">Search Results</p>
-              <div class="result-title-row">
-                <h2 id="results-title">검색 결과</h2>
-                <p id="result-summary" class="result-summary" aria-live="polite">곡을 불러오는 중...</p>
-              </div>
-            </div>
-            <label class="sort-control" for="sort-select">
-              <span>Sort by</span>
-              <select id="sort-select">
-                <option value="default">기본순</option>
-                <option value="title">제목순</option>
-                <option value="artist">가수순</option>
-                <option value="singCount">부른 횟수순</option>
-              </select>
-            </label>
-          </div>
-          <section id="song-list" class="song-list" aria-label="검색 결과"></section>
-        </section>
-
-        <aside class="sidebar" aria-label="추천과 도움말">
-          <section class="side-card help-panel">
-            <p class="side-label">🔎 Search Help</p>
-            <h2>검색 도움말</h2>
-            <ul class="help-list">
-              <li>여러 단어는 띄어쓰기로 검색</li>
-              <li>제목, 가수, 장르, 주제, 태그를 함께 탐색</li>
-              <li>예: 일본어 발라드 / 사랑 그리움</li>
-            </ul>
-          </section>
-
-          <section class="side-card side-card-pink pick-panel">
-            <p class="side-label">🍵 Kura Pick Collection</p>
-            <h2>쿠라 Pick 모음</h2>
-            <p>Pick 표시가 있는 곡을 모아보는 컬렉션 영역으로 확장할 수 있습니다.</p>
-          </section>
-        </aside>
+  <body class="portal-page">
+    <main class="portal-hero">
+      <div class="portal-scene" aria-hidden="true">
+        <span class="portal-scene-cup">🍵</span>
+        <span class="portal-scene-jelly">🪼</span>
+        <span class="portal-scene-petal">🌸</span>
       </div>
 
-      <footer class="site-footer">
-        <p>🪼 Kura's Songbook</p>
-        <p>A fan-made song search site for Kura and Kuramates 🍃</p>
-        <nav aria-label="Footer links">
-          <span>About</span>
-          <span>Request a Song</span>
-          <span>Suggest / Report</span>
-        </nav>
-      </footer>
-    </div>
+      <section class="portal-panel" aria-labelledby="portal-title">
+        <p class="portal-eyebrow">Kura Songbook</p>
+        <h1 id="portal-title">쿠라's 노래책</h1>
+        <p class="portal-copy">노래 제목, 가수, 애니, OST 키워드로 쿠라의 노래를 찾아보세요.</p>
 
-    <script src="src/app.js" defer></script>
+        <form class="portal-search" id="portal-search-form">
+          <label class="search-label" for="portal-search-input">검색어</label>
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="portal-search-input"
+            type="search"
+            placeholder="예: 레몬, 발라드, OST"
+            autocomplete="off"
+          >
+          <button type="submit">검색</button>
+        </form>
+
+        <div class="portal-chip-row" aria-label="빠른 탐색">
+          <a href="./search.html?q=일본어">일본어</a>
+          <a href="./search.html?q=발라드">발라드</a>
+          <a href="./search.html?q=OST">OST</a>
+          <a href="./search.html?q=그리움">그리움</a>
+        </div>
+
+        <div class="portal-actions">
+          <button id="show-results-button" type="button">전체 곡 보기</button>
+          <a href="./search.html">검색 결과 페이지로 이동</a>
+        </div>
+      </section>
+
+      <aside class="portal-preview" aria-label="포털 안내">
+        <article class="portal-preview-card">
+          <p>🍀 오늘의 랜덤 추천</p>
+          <h2>검색 페이지에서 바로 뽑기</h2>
+          <a href="./search.html?random=1">랜덤 추천 열기</a>
+        </article>
+        <article class="portal-preview-card portal-preview-soft">
+          <p>🔎 검색 도움말</p>
+          <h2>여러 단어는 띄어쓰기</h2>
+          <span>제목, 가수, 장르, 분위기를 함께 찾아요.</span>
+        </article>
+      </aside>
+    </main>
+
+    <script src="./src/portal.js?v=beta-1" defer></script>
   </body>
 </html>
