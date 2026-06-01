@@ -1,0 +1,299 @@
+:root {
+  --matcha: #6f8f5e;
+  --matcha-dark: #2f5130;
+  --ivory: #fffdf8;
+  --paper: #fffef9;
+  --line: #d8e2cf;
+  --pink: #f28fa7;
+  --muted: #63705f;
+  --danger: #b4454d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% 8%, rgba(242, 143, 167, 0.18), transparent 22%),
+    linear-gradient(180deg, var(--ivory), #f8f1e4);
+  color: var(--matcha-dark);
+  font-family: "Segoe UI", "Noto Sans KR", system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--matcha-dark);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 22px;
+  background: rgba(255, 254, 249, 0.96);
+  box-shadow: 0 8px 24px rgba(47, 81, 48, 0.08);
+}
+
+.brand {
+  font-weight: 800;
+  text-decoration: none;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+nav a,
+.button,
+button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--matcha);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: var(--matcha);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+nav a {
+  min-height: 30px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--matcha-dark);
+}
+
+.wrap {
+  width: min(1180px, calc(100% - 28px));
+  margin: 24px auto 56px;
+}
+
+.hero,
+.box,
+.card,
+.table-wrap {
+  border: 1px solid rgba(216, 226, 207, 0.9);
+  border-radius: 18px;
+  background: rgba(255, 254, 249, 0.94);
+  box-shadow: 0 12px 32px rgba(47, 81, 48, 0.08);
+}
+
+.hero {
+  padding: 28px;
+}
+
+.hero h1,
+h1,
+h2 {
+  margin: 0 0 10px;
+}
+
+.eyebrow,
+.muted {
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.card {
+  padding: 18px;
+}
+
+.card strong {
+  display: block;
+  font-size: 1.6rem;
+}
+
+.card span {
+  color: var(--muted);
+}
+
+.actions,
+.form-actions,
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.count-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inline-form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.count-actions .button,
+.count-actions button {
+  min-height: 30px;
+  padding: 0 10px;
+}
+
+.confirm-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px 14px;
+}
+
+.confirm-list dt {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.confirm-list dd {
+  margin: 0;
+}
+
+.ghost {
+  border-color: var(--line);
+  background: #fff;
+  color: var(--matcha-dark);
+}
+
+.danger-link,
+.danger-button {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+.box {
+  margin: 16px 0;
+  padding: 16px;
+}
+
+.box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.error {
+  border-color: rgba(180, 69, 77, 0.35);
+  background: #fff2f3;
+}
+
+.warn {
+  border-color: rgba(242, 143, 167, 0.45);
+  background: #fff8fa;
+}
+
+.ok {
+  border-color: rgba(111, 143, 94, 0.45);
+  background: #f4f8ef;
+}
+
+.info {
+  background: #f8fbf5;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f4f8ef;
+  color: var(--matcha-dark);
+  white-space: nowrap;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 9px 11px;
+  background: #fff;
+  color: var(--matcha-dark);
+  font: inherit;
+}
+
+.filter-bar input {
+  max-width: 340px;
+}
+
+.filter-bar select {
+  max-width: 180px;
+}
+
+.song-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.song-form label {
+  display: grid;
+  gap: 5px;
+  font-weight: 700;
+}
+
+.song-form label span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.song-form label:has(textarea),
+.form-actions {
+  grid-column: 1 / -1;
+}
+
+code,
+pre {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  .grid,
+  .song-form {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .grid {
+    display: grid;
+  }
+}

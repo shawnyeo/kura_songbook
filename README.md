@@ -1,6 +1,6 @@
 # Kura Songbook / 쿠라's 노래책
 
-쿠라's 노래책은 Google Sheets MVP로 검증한 방송용 노래 검색 UI를 GitHub Pages 기반 정적 웹사이트로 이전하는 프로젝트입니다.
+쿠라's 노래책은 Google Sheets MVP로 검증한 방송용 노래 검색 UI를 GitHub Pages 기반 Web v1.0 Beta 정적 사이트로 운영하는 프로젝트입니다.
 
 ## Goal
 
@@ -11,7 +11,7 @@
 - GitHub Pages
 - Static site
 - Plain HTML/CSS/JS first
-- `data/songs.json` 기반 검색
+- `data/songs.json` official web DB 기반 검색
 - PC/mobile responsive UI
 - 말차 / 아이보리 / 연핑크 / 핑크 해파리 디자인
 
@@ -19,17 +19,34 @@
 
 Codex 또는 작업자는 먼저 아래 문서를 읽어야 합니다.
 
-1. `docs/00_PROJECT_STATE_v1_0.md`
-2. `docs/01_WEB_MIGRATION_SPEC.md`
+1. `docs/00_PROJECT_STATE_v1_0_WEB.md`
+2. `docs/01_WEB_ARCHITECTURE_SPEC.md`
 3. `docs/02_DESIGN_BRIEF.md`
 4. `docs/03_CURRENT_TASK.md`
+5. `docs/04_SONG_SCHEMA_JSON.md`
+6. `docs/05_GPT_SONG_OUTPUT_FORMAT.md`
+7. `docs/06_DATA_MAINTENANCE.md`
 
-`source_archive/`는 과거 자료 보관용입니다.  
-문서가 충돌하면 `docs/`를 우선합니다.
+현재 Web v1.0 운영 기준은 `data/songs.json`과 위 문서들입니다.
+Google Sheets / xlsx 자료는 legacy snapshot, backup, import source로만 사용합니다.
 
-## Convert xlsx to JSON
+Legacy Google Sheets MVP 문서는 `docs/legacy/`에 보관되어 있습니다.
+문서가 충돌하면 Web v1.0 문서와 `data/songs.json`을 우선합니다.
 
-실제 Google Sheets snapshot을 `data/songs.json`으로 변환할 때는 아래 명령을 사용합니다.
+## Data Source
+
+현재 공식 웹 DB source of truth는 다음 파일입니다.
+
+```text
+data/songs.json
+```
+
+곡 추가/수정은 기본적으로 `data/songs.json` 기준으로 진행합니다.
+schema는 `docs/04_SONG_SCHEMA_JSON.md`를 따릅니다.
+
+## Legacy xlsx Import
+
+Google Sheets snapshot 또는 xlsx 백업을 다시 import해야 할 때만 아래 변환기를 사용합니다.
 
 ```powershell
 python scripts/convert_xlsx_to_songs.py
@@ -46,6 +63,8 @@ python scripts/convert_xlsx_to_songs.py --dry-run
 ```powershell
 python scripts/convert_xlsx_to_songs.py --input "source_archive/쿠라's 노래책  v1.0.xlsx" --output data/songs.json
 ```
+
+일반 운영에서는 xlsx가 source of truth가 아닙니다.
 
 로컬에서 사이트를 확인할 때는 `file://` 대신 정적 서버를 사용합니다.
 

@@ -2,76 +2,111 @@
 
 ## Current Goal
 
-쿠라's 노래책 Google Sheets MVP를 GitHub Pages 기반 정적 웹사이트로 이전하기 위한 초기 skeleton을 만든다.
+Web v1.0 공개 이후, 공식 DB 운영 체계와 문서를 정리한다.
+
+현재 우선순위는 디자인 대공사가 아니라 다음이다.
+
+```text
+문서 갱신
+↓
+songs.json schema 확정
+↓
+GPT 곡 출력 포맷 확정
+↓
+데이터 유지보수 흐름 확정
+↓
+로컬 관리 도구 생성
+```
+
+---
 
 ## Current Phase
 
-Phase 0 — Project setup and Codex onboarding.
+Phase 1 — Web v1.0 documentation and data maintenance planning.
+
+---
 
 ## Source of Truth
 
-Read these first:
+현재 source of truth:
 
-1. `docs/00_PROJECT_STATE_v1_0.md`
-2. `docs/01_WEB_MIGRATION_SPEC.md`
-3. `docs/02_DESIGN_BRIEF.md`
-4. `docs/03_CURRENT_TASK.md`
+1. `docs/00_PROJECT_STATE_v1_0_WEB.md`
+2. `docs/04_SONG_SCHEMA_JSON.md`
+3. `docs/05_GPT_SONG_OUTPUT_FORMAT.md`
+4. `docs/06_DATA_MAINTENANCE.md`
+5. `docs/02_DESIGN_BRIEF.md`
+6. `docs/07_ROADMAP_AFTER_V1.md`
 
-Use `source_archive/` only as historical reference.
+Legacy reference:
 
-If `docs/` conflicts with `source_archive/`, follow `docs/`.
+- `docs/legacy/`
+- Google Sheets MVP documents
+- xlsx snapshot
+- old migration plans
 
-## Important Rules
+Legacy 문서는 현재 운영 기준이 아니다.
 
-- Do not edit files before summarizing your understanding.
-- Do not implement backend.
-- Do not add login/account features.
-- Do not use Supabase/Firebase.
-- Do not implement Google Sheets auto sync.
-- Do not infer schema from xlsx directly.
-- Do not replicate Google Sheets formulas 1:1.
-- Default to plain HTML/CSS/JS.
-- Do not introduce React/Vite/build tools unless you explain the trade-off and get approval.
-- Keep mobile usability high.
-- Keep the design cute but not childish.
-- Avoid SaaS dashboard styling.
+---
 
-## First Codex Prompt
+## Current Rules
 
-Before editing any files, inspect this repository and summarize:
+- `data/songs.json`을 공식 웹 DB로 본다.
+- Google Sheets/xlsx는 legacy import 또는 backup source다.
+- 곡 추가는 JSON 객체 기준으로 한다.
+- GPT에게 곡 추가를 요청할 때는 `05_GPT_SONG_OUTPUT_FORMAT.md`를 따른다.
+- 불확실한 정보는 추정하지 않고 빈 값 또는 TODO로 둔다.
+- 웹 UI 수정 전에는 현재 배포 상태와 source of truth를 확인한다.
+- 배포 전에는 `validate_songs.py` 또는 JSON parse 검증을 수행한다.
 
-1. What this project is.
-2. What files and folders currently exist.
-3. What source documents you found.
-4. The intended data schema.
-5. The search/filter behavior.
-6. The PC/mobile UI direction.
-7. The design direction.
-8. The safest first implementation plan.
+---
 
-Then wait for approval.
+## Immediate Tasks
 
-## First Implementation Target
+### 1. 문서 갱신
 
-After approval, implement only the first skeleton:
+- `00_PROJECT_STATE_v1_0_WEB.md`
+- `01_WEB_ARCHITECTURE_SPEC.md`
+- `02_DESIGN_BRIEF.md`
+- `04_SONG_SCHEMA_JSON.md`
+- `05_GPT_SONG_OUTPUT_FORMAT.md`
+- `06_DATA_MAINTENANCE.md`
+- `07_ROADMAP_AFTER_V1.md`
+- `08_RELEASE_NOTES_v1_0.md`
 
-- `index.html`
-- `src/style.css`
-- `src/app.js`
-- `data/songs.json` sample
-- load songs.json
-- render sample song cards
-- basic search input
-- no advanced styling yet
+### 2. 운영 도구 설계
 
-## Next After Skeleton
+- `tools/validate_songs.py`
+- `tools/update_song.py`
+- `tools/append_song.py`
+- `tools/new_song.example.json`
 
-After the skeleton works:
+### 3. 실제 운영 테스트
 
-1. Implement full search logic.
-2. Add filters.
-3. Add random recommendation.
-4. Add video/lyrics buttons.
-5. Add responsive mobile card layout.
-6. Polish design.
-7. Add xlsx/csv to JSON conversion workflow.
+- `Lemon` singCount +1
+- 영상 링크 교체
+- 가사 링크 추가
+- 신곡 1개 append test
+
+---
+
+## Deferred Tasks
+
+- 태그 collapse/expand
+- 모바일 전용 개선
+- 포털 랜덤 미리보기
+- Pick collection
+- YouTube iframe modal
+- feedback/request form
+- local admin page
+
+---
+
+## Codex Rule
+
+Codex 작업자는 다음을 지킨다.
+
+1. 현재 구조를 먼저 요약한다.
+2. `data/songs.json` 수정 작업과 UI 수정 작업을 섞지 않는다.
+3. 곡 추가/수정 도구를 만들 때는 먼저 dry-run 기능을 둔다.
+4. 자동 commit/push 하지 않는다.
+5. source verification needed 항목을 추정으로 메우지 않는다.
