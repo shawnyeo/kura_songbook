@@ -1,51 +1,90 @@
 # Kura Songbook / 쿠라's 노래책
 
-쿠라's 노래책은 Google Sheets MVP로 검증한 방송용 노래 검색 UI를 GitHub Pages 기반 정적 웹사이트로 이전하는 프로젝트입니다.
+쿠라's 노래책은 스트리머 쿠라맛챠 방송용으로 만든 팬메이드 노래 검색 사이트입니다.
+
+Google Sheets MVP로 검증한 검색 구조를 바탕으로, 현재는 GitHub Pages 기반 정적 웹사이트로 공개된 Web v1.0 Beta 상태입니다.
 
 ## Goal
 
-스트리머와 시청자가 방송 중 곡을 빠르게 검색하고, 영상/가사 링크로 이동할 수 있는 팬페이지형 노래 검색 사이트를 만든다.
+스트리머와 시청자가 방송 중 곡을 빠르게 검색하고, 영상/가사 링크로 이동하며, 랜덤 추천과 필터를 통해 노래를 고를 수 있는 팬페이지형 노래 검색 사이트를 만든다.
 
-## Current Direction
+## Current Status
 
-- GitHub Pages
-- Static site
-- Plain HTML/CSS/JS first
-- `data/songs.json` 기반 검색
-- PC/mobile responsive UI
+- Web v1.0 Beta 공개 완료
+- GitHub Pages 기반 정적 사이트
+- Plain HTML/CSS/JavaScript
+- `index.html` = 메인 포털
+- `search.html` = 검색 결과 페이지
+- `data/songs.json` = 공식 웹 DB
+- Google Sheets / xlsx = legacy snapshot / backup / import source
 - 말차 / 아이보리 / 연핑크 / 핑크 해파리 디자인
+
+## Main Features
+
+- 자유검색
+- 언어 / 장르 / 분위기 필터
+- Pick 먼저 보기
+- 정렬
+- 전체 곡 랜덤 추천
+- 현재 검색 결과 내 랜덤 추천
+- YouTube 썸네일 기반 영상 링크
+- 가사 링크
+- 부른 횟수 표시
+- songIntro 기반 1줄 곡 소개
+
+## Project Structure
+
+```text
+kura_songbook/
+├─ index.html              # 메인 포털
+├─ search.html             # 검색 결과 페이지
+├─ src/
+│  ├─ app.js               # 검색/필터/정렬/랜덤/카드 렌더링
+│  ├─ portal.js            # 포털 검색 → search.html 이동
+│  └─ style.css            # 공통 스타일
+├─ data/
+│  └─ songs.json           # 공식 웹 DB
+├─ assets/                 # 배경/이미지 에셋
+├─ docs/                   # 프로젝트 문서
+├─ scripts/                # legacy/import helper scripts
+└─ source_archive/         # 과거 자료 / Google Sheets snapshot
+```
+
+## Data Source Policy
+
+현재 운영 기준은 다음과 같습니다.
+
+```text
+data/songs.json = official web DB source of truth
+Google Sheets / xlsx = legacy snapshot / backup / import source
+```
+
+신곡 추가, 부른 횟수 수정, 영상/가사 링크 교체는 앞으로 `data/songs.json` 기준으로 관리합니다.
+
+Google Sheets 기반 문서는 과거 MVP 구조와 taxonomy 원칙을 이해하기 위한 reference로만 사용합니다.
 
 ## Docs
 
-Codex 또는 작업자는 먼저 아래 문서를 읽어야 합니다.
+Codex 또는 작업자는 먼저 현재 Web v1.0 기준 문서를 읽어야 합니다.
 
-1. `docs/00_PROJECT_STATE_v1_0.md`
-2. `docs/01_WEB_MIGRATION_SPEC.md`
+권장 문서 구조:
+
+1. `docs/00_PROJECT_STATE_v1_0_WEB.md`
+2. `docs/01_WEB_ARCHITECTURE_SPEC.md`
 3. `docs/02_DESIGN_BRIEF.md`
 4. `docs/03_CURRENT_TASK.md`
+5. `docs/04_SONG_SCHEMA_JSON.md`
+6. `docs/05_GPT_SONG_OUTPUT_FORMAT.md`
+7. `docs/06_DATA_MAINTENANCE.md`
+8. `docs/07_ROADMAP_AFTER_V1.md`
+9. `docs/08_RELEASE_NOTES_v1_0.md`
+10. `docs/09_IMPLEMENTATION_HISTORY.md`
 
-`source_archive/`는 과거 자료 보관용입니다.  
-문서가 충돌하면 `docs/`를 우선합니다.
+Legacy Google Sheets 문서는 `docs/legacy/` 또는 `source_archive/`에 보관합니다.
 
-## Convert xlsx to JSON
+문서가 충돌하면 현재 Web v1.0 기준 문서를 우선합니다.
 
-실제 Google Sheets snapshot을 `data/songs.json`으로 변환할 때는 아래 명령을 사용합니다.
-
-```powershell
-python scripts/convert_xlsx_to_songs.py
-```
-
-변환 전 미리보기만 확인하려면:
-
-```powershell
-python scripts/convert_xlsx_to_songs.py --dry-run
-```
-
-입력/출력 경로를 직접 지정할 수도 있습니다.
-
-```powershell
-python scripts/convert_xlsx_to_songs.py --input "source_archive/쿠라's 노래책  v1.0.xlsx" --output data/songs.json
-```
+## Local Preview
 
 로컬에서 사이트를 확인할 때는 `file://` 대신 정적 서버를 사용합니다.
 
@@ -53,7 +92,39 @@ python scripts/convert_xlsx_to_songs.py --input "source_archive/쿠라's 노래�
 python -m http.server 8000
 ```
 
-그 다음 `http://localhost:8000`을 엽니다.
+그 다음 아래 주소를 엽니다.
+
+```text
+http://localhost:8000
+```
+
+검색 페이지를 직접 확인하려면:
+
+```text
+http://localhost:8000/search.html
+```
+
+## Legacy xlsx Import
+
+Google Sheets snapshot을 `data/songs.json`으로 다시 변환해야 할 때만 아래 스크립트를 사용합니다.
+
+```powershell
+python scripts/convert_xlsx_to_songs.py
+```
+
+미리보기:
+
+```powershell
+python scripts/convert_xlsx_to_songs.py --dry-run
+```
+
+입력/출력 경로 지정:
+
+```powershell
+python scripts/convert_xlsx_to_songs.py --input "source_archive/쿠라's 노래책  v1.0.xlsx" --output data/songs.json
+```
+
+주의: 일반 운영에서는 xlsx 변환보다 `data/songs.json` 직접 관리와 향후 로컬 관리 도구 사용을 우선합니다.
 
 ## GitHub Pages Deployment
 
@@ -61,13 +132,32 @@ GitHub Pages는 repository root를 정적 사이트로 배포하도록 설정합
 
 Recommended settings:
 
-* Source: `Deploy from a branch`
-* Branch: `main`
-* Folder: `/ (root)`
+- Source: `Deploy from a branch`
+- Branch: currently configured deployment branch
+- Folder: `/ (root)`
 
-## Design References
+배포 후에는 GitHub Pages URL에서 다음을 확인합니다.
 
-Visual references are stored in:
+- `/` 메인 포털 로드
+- `/search.html` 검색 페이지 로드
+- `data/songs.json` fetch 정상
+- CSS/JS/assets 경로 정상
+
+## Design Direction
+
+Primary design direction:
+
+- matcha green
+- warm ivory
+- sakura pink
+- pink jellyfish mascots
+- soft Japanese fan site atmosphere
+- music search result clarity
+- cute but not childish
+- fanpage-like but not messy
+- not a SaaS dashboard
+
+Design references are stored in:
 
 ```text
 docs/design_reference/
@@ -75,20 +165,38 @@ docs/design_reference/
 
 Important:
 
-* The design references are not literal layouts to copy.
-* Google Sheets screenshots represent the validated MVP mood, information hierarchy, and feature intent.
-* The generated desktop mockup is the primary visual mood reference for the web version.
-* The final website should be web-native, responsive, and easier to use than the sheet.
-* If visual references conflict with usability, usability wins.
+- 디자인 레퍼런스는 그대로 복제하는 대상이 아니라 mood/reference다.
+- Google Sheets screenshots represent the validated MVP mood, information hierarchy, and feature intent.
+- The generated desktop mockup is the primary visual mood reference for the web version.
+- If visual references conflict with usability, usability wins.
 
-Primary design direction:
+## Fan Nickname
 
-* matcha green
-* warm ivory
-* sakura pink
-* pink jellyfish mascots
-* soft Japanese fan site atmosphere
-* music search result clarity
-* cute but not childish
-* fanpage-like but not messy
-* not a SaaS dashboard
+UI와 문서에서 팬닉은 다음 표기를 사용합니다.
+
+```text
+냉채단
+```
+
+`Kuramates`는 기본 표기로 사용하지 않습니다.
+
+## Current Priorities
+
+v1.0.1 우선순위:
+
+1. 문서 최신화
+2. `songs.json` schema 확정
+3. GPT 곡 출력 포맷 확정
+4. `validate_songs.py`
+5. `update_song.py`
+6. `append_song.py`
+7. 실제 운영 테스트
+
+v1.1 이후 후보:
+
+- 태그 collapse/expand
+- 포털 랜덤 미리보기
+- Pick collection
+- 모바일 UX 개선
+- favicon / OG image
+- 스트리머가 부른 클립 링크 모음
